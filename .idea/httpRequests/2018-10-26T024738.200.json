@@ -1,0 +1,23 @@
+[
+  {
+    "amountofmessage": 0,
+    "_id": "5bd31936f4aaf769f04401f1",
+    "id": 1001,
+    "username": "ly",
+    "sex": "male"
+  },
+  {
+    "amountofmessage": 0,
+    "_id": "5bd319b6da01c265341e1055",
+    "id": 1002,
+    "username": "bj",
+    "sex": "male"
+  },
+  {
+    "amountofmessage": 0,
+    "_id": "5bd31af5da01c265341e1056",
+    "id": 1003,
+    "username": "wzt",
+    "sex": "male"
+  }
+]

@@ -1,0 +1,24 @@
+{
+  "message": "Information NOT Added!",
+  "errmsg": {
+    "errors": {
+      "username": {
+        "message": "Too short",
+        "name": "ValidatorError",
+        "properties": {
+          "msg": "Too short",
+          "message": "Too short",
+          "type": "user defined",
+          "path": "username",
+          "value": "t"
+        },
+        "kind": "user defined",
+        "path": "username",
+        "value": "t"
+      }
+    },
+    "_message": "Information validation failed",
+    "message": "Information validation failed: username: Too short",
+    "name": "ValidationError"
+  }
+}

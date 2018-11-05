@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "5bd31936f4aaf769f04401f1",
+    "amountofmessage": 0,
+    "id": 1001,
+    "username": "ly",
+    "sex": "male",
+    "messageowner": [
+      {
+        "_id": "5bd304aa1cfbbb49085ee607",
+        "sender": "ly",
+        "content": "This mine!"
+      }
+    ],
+    "users' information": [
+      {
+        "_id": "5bd304fc1cfbbb49085ee609",
+        "username": "ly",
+        "password": "l123456"
+      }
+    ]
+  },
+  {
+    "_id": "5bd319b6da01c265341e1055",
+    "amountofmessage": 0,
+    "id": 1002,
+    "username": "bj",
+    "sex": "male",
+    "messageowner": [
+      {
+        "_id": "5bd304a01cfbbb49085ee606",
+        "sender": "bj",
+        "content": "This mine!"
+      }
+    ],
+    "users' information": [
+      {
+        "_id": "5bd304f31cfbbb49085ee608",
+        "username": "bj",
+        "password": "b123456"
+      }
+    ]
+  }
+]

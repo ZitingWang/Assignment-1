@@ -1,0 +1,24 @@
+{
+  "message": "User NOT Added!",
+  "errmsg": {
+    "errors": {
+      "password": {
+        "message": "Too short",
+        "name": "ValidatorError",
+        "properties": {
+          "msg": "Too short",
+          "message": "Too short",
+          "type": "user defined",
+          "path": "password",
+          "value": "123456"
+        },
+        "kind": "user defined",
+        "path": "password",
+        "value": "123456"
+      }
+    },
+    "_message": "User validation failed",
+    "message": "User validation failed: password: Too short",
+    "name": "ValidationError"
+  }
+}

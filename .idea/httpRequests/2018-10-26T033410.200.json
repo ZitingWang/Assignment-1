@@ -1,0 +1,22 @@
+[
+  {
+    "_id": "5bd26d105901d0a008f34fad",
+    "sender": "wzt",
+    "content": "This my web!"
+  },
+  {
+    "_id": "5bd3048d1cfbbb49085ee605",
+    "sender": "wzt",
+    "content": "This mine!"
+  },
+  {
+    "_id": "5bd304a01cfbbb49085ee606",
+    "sender": "bj",
+    "content": "This mine!"
+  },
+  {
+    "_id": "5bd304aa1cfbbb49085ee607",
+    "sender": "ly",
+    "content": "This mine!"
+  }
+]
