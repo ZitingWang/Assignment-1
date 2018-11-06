@@ -2,17 +2,17 @@ let User = require('../models/users');
 let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
-var mongodbUri = 'mongodb://WZT:NBNBwzt155@ds139193.mlab.com:39193/heroku_45x9jh4d'
-mongoose.connect(mongodbUri);
+//var mongodbUri = 'mongodb://WZT:NBNBwzt155@ds139193.mlab.com:39193/heroku_45x9jh4d'
+//mongoose.connect(mongodbUri);
 
-let db = mongoose.connection;
+/*let db = mongoose.connection;
 db.on('error', function (err) {
     console.log('Unable to Connect to [ ' + db.name + ' ]', err);
 });
 
 db.once('open', function () {
-    console.log('Successfully Connected to [ ' + db.name + ' ] on mlab.com');
-});
+    console.log('Successfully Connected to [ ' + db.name + ' ]');
+});*/
 
 router.findAll = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -37,6 +37,7 @@ router.findOne = (req, res) => {
     });
 }
 router.fuzzy = (req, res) =>{
+    res.setHeader('Content-Type', 'application/json');
     var key = req.params.key;
     var whereStr = {$or:[
             {username:{$regex:key,$options: '$i'}},
@@ -81,7 +82,7 @@ router.deleteAll = (req, res) => {
         if (err)
             res.json({ message: 'Users NOT DELETED!', errmsg : err } );
         else
-            res.json({ message: 'All of the users Successfully Deleted!'});
+            res.json({ message: 'All of the Users Successfully Deleted!'});
     });
 }
 

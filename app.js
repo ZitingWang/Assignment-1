@@ -8,7 +8,16 @@ var usersRouter = require('./routes/users');
 const informations = require("./routes/informations");
 const user = require("./routes/user");
 const message = require("./routes/message");
+let mongoose = require('mongoose');
 var app = express();
+var config = require('./_config');
+mongoose.connect(config.mongoURI[app.settings.env], function(err, res) {
+    if(err) {
+        console.log('Error connecting to the database. ' + err);
+    } else {
+        console.log('Connected to Database: ' + config.mongoURI[app.settings.env]);
+    }
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -39,17 +48,18 @@ app.get('/user', user.findAll);
 app.get('/user/:id', user.findOne);
 app.get('/user/f/:key', user.fuzzy);
 app.post('/user',user.addUser);
-app.delete('/user/:id', user.deleteUser);
+app.delete('/user/:username', user.deleteUser);
 app.delete('/user', user.deleteAll);
 
 //routes/message.js
 app.get('/message', message.findAll);
 app.get('/message/:id', message.findOne);
 app.get('/message/f/:key', message.fuzzy);
+app.get('/message/s/find', message.findaoms);
 app.post('/message',message.addMessage);
 app.delete('/message/:sender', message.deleteMessage);
 app.delete('/message', message.deleteAll);
-app.get('/message/s/find', message.findaoms);
+
 //routes finish
 
 app.use(function(req, res, next) {

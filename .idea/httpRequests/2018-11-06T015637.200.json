@@ -1,0 +1,23 @@
+[
+  {
+    "_id": "5be1690731a5c256ad574fb4",
+    "amountofmessage": 0,
+    "id": 1,
+    "username": "wzt",
+    "sex": "male",
+    "messageowner": [
+      {
+        "_id": "5be19d87219762881153adb7",
+        "sender": "wzt",
+        "content": "123456"
+      }
+    ],
+    "users' information": [
+      {
+        "_id": "5be19d64219762881153adb6",
+        "username": "wzt",
+        "password": "123456"
+      }
+    ]
+  }
+]

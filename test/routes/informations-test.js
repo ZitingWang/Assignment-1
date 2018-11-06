@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+var mongoose = require("mongoose");
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let server = require('../../bin/www');
@@ -5,84 +7,129 @@ let expect = chai.expect;
 chai.use(require('chai-things'));
 chai.use(chaiHttp);
 let _ = require('lodash' );
-let datastore = require('../../models/informations');
+let message = require('../../models/message');
+let user = require('../../models/users');
+let information = require('../../models/informations');
+const request = require('supertest');
+
 describe('Informations', function (){
+    beforeEach(function(done){
+        var inf = new information({ _id:mongoose.Types.ObjectId('5be1690731a5c256ad574fb4'),
+            id : 1,
+            username : "bj",
+            sex : "male",
+            amountofmessage: 1
+    });
+        inf.save(function(err) {
+            done();
+        });
+    });
+    beforeEach(function(done){
+        var us = new user({ _id:mongoose.Types.ObjectId('5be1690731a5c256ad574fc1'),
+            username : "bj",
+            password : "123456"
+        });
+        us.save(function(err) {
+            done();
+        });
+    });
+    beforeEach(function(done){
+        var mes = new message({ _id:mongoose.Types.ObjectId('5be1690731a5c256ad574fd1'),
+            sender : "bj",
+            content : "This bj's test!"
+        });
+        mes.save(function(err) {
+            done();
+        });
+    });
+    //afterEach(function(done){
+       // information.collection.drop();
+       // done();
+    //});
+
     describe('GET /informations',  () => {
         it('should return all the informations in an array', function(done) {
-            chai.request(server)
+            request(server)
                 .get('/informations')
                 .end(function(err, res) {
                     expect(res).to.have.status(200);
                     expect(res.body).to.be.a('array');
-                    expect(res.body.length).to.equal(2);
-                    done();
-                });
-        });
-    });
-    describe('POST /informations', function () {
-        it('should return confirmation message and update datastore', function(done) {
-            let information = {
-                id : 1000,
-                username: 'test' ,
-                sex: 'male',
-                amountofmessage: 0
-            };
-            chai.request(server)
-                .post('/informations')
-                .send(information)
-                .end(function(err, res) {
-                    expect(res).to.have.status(200);
-                    expect(res.body).to.have.property('message').equal('Information Successfully Added!' );
-                    done();
-                });
-        });
-        after(function  (done) {
-            chai.request(server)
-                .get('/informations')
-                .end(function(err, res) {
-                    let result = _.map(res.body, (information) => {
-                        return { username: information.username,
-                            sex: information.sex };
+                    expect(res.body.length).to.equal(1);
+                    let result = _.map(res.body, (inf) => {
+                        return { id: inf.id,
+                            username: inf.username,
+                            sex: inf.sex}
                     });
-                    expect(result).to.include( { username: 'test', sex: 'male'  } );
+                    expect(result).to.include( { id: 1, username:"bj",sex: "male"  } );
+                    information.collection.drop();
                     done();
                 });
         });
-    });
-    describe('PUT /informations/:username', () => {
-        it('should return a message and the information amountofmessage by 1', function(done) {
-            chai.request(server)
-                .put('/informations/ly')
-                .end(function(err, res) {
+        it('should return one of the informations in an array', function(done) {
+                request(server)
+                    .get('/informations/5be1690731a5c256ad574fb4')
+                    .end(function (err, res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.be.a('array');
+                        expect(res.body.length).to.equal(1);
+                        let result = _.map(res.body, (inf) => {
+                            return { id: inf.id,
+                                username: inf.username,
+                                sex: inf.sex}
+                        });
+                        expect(result).to.include( { id: 1, username:"bj",sex: "male"  } );
+                        information.collection.drop();
+                        done();
+                    });
+
+        });
+        it('should return one of the informations in an array by fuzzy search', function(done) {
+            request(server)
+                .get('/informations/f/b')
+                .end(function (err, res) {
                     expect(res).to.have.status(200);
-                    let information = res.body.message ;
-                    expect(information).to.include('Information Successfully Increased!');
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    let result = _.map(res.body, (inf) => {
+                        return { id: inf.id,
+                            username: inf.username,
+                            sex: inf.sex}
+                    });
+                    expect(result).to.include( { id: 1, username:"bj",sex: "male"  } );
+                    information.collection.drop();
                     done();
                 });
         });
-    });
-    describe('DELETE /informations/:id', function () {
-        it('should return Information Successfully Deleted!', function(done) {
-            chai.request(server)
-                .delete('/informations/1000')
-                .end(function(err, res) {
+        it('should return the informations in different tables', function(done) {
+            request(server)
+                .get('/informations/t/table')
+                .end(function (err, res) {
                     expect(res).to.have.status(200);
-                    let information = res.body.message;
-                    expect(information).to.include('Information Successfully Deleted!');
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    let result = _.map(res.body, (inf) => {
+                        return { id: inf.id,
+                            username: inf.username,
+                            sex: inf.sex}
+                    });
+                    expect(result).to.include( { id: 1, username:"bj",sex: "male"});
+                    information.collection.drop();
+                    user.collection.drop();
+                    message.collection.drop();
                     done();
                 });
         });
-    });
-    describe('DELETE /informations', function () {
-        it('should return Information Successfully Deleted!', function(done) {
-            chai.request(server)
-                .delete('/informations')
-                .end(function(err, res) {
+        it('should return the total amount of messages', function(done) {
+            request(server)
+                .get('/informations/t/table')
+                .end(function (err, res) {
                     expect(res).to.have.status(200);
-                    let information = res.body.message;
-                    expect(information).to.include('All of Information Successfully Deleted!');
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    information.collection.drop();
                     done();
                 });
         });
     });
+    
 });

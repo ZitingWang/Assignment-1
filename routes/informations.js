@@ -4,17 +4,15 @@ let Message = require('../models/message');
 let express = require('express');
 let router = express.Router();
 let mongoose = require('mongoose');
-//var mongodbUri = 'mongodb://WZT:NBNBwzt155@ds139193.mlab.com:39193/heroku_45x9jh4d'
-//mongoose.connect(mongodbUri);
-
-let db = mongoose.connection;
-db.on('error', function (err) {
+//mongoose.connect('mongodb://localhost:27017/informationdb');
+//let db = mongoose.connection;
+/*db.on('error', function (err) {
     console.log('Unable to Connect to [ ' + db.name + ' ]', err);
 });
 
 db.once('open', function () {
     console.log('Successfully Connected to [ ' + db.name + ' ]');
-});
+});*/
 
 router.findAll = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
@@ -55,7 +53,7 @@ router.findfromtables = (req, res) => {
             from:"users",
             localField: "username",
             foreignField:"username",
-            as:"users' information"
+            as:"usersinformation"
             }
         }
         ],function (err,informations) {
@@ -69,6 +67,7 @@ router.findfromtables = (req, res) => {
 }
 
 router.fuzzy = (req, res) =>{
+    res.setHeader('Content-Type', 'application/json');
     var key = req.params.key;
     var whereStr = {$or:[
             //{id:{$regex:key}},
@@ -81,6 +80,7 @@ router.fuzzy = (req, res) =>{
             res.json({ message: 'Information NOT Found!', errmsg : err } );
         } else {
             res.send(JSON.stringify(information,null,5));
+            //console.log(typeof(information));
         }
     })
 }
@@ -127,9 +127,10 @@ router.incrementaom = (req, res) => {
 router.deleteInformation = (req, res) => {
 
     Information.findOneAndRemove({"username":req.params.username}, function(err) {
-        if (err)
+        if (err){
             res.json({ message: 'Information NOT DELETED!', errmsg : err } );
-        else
+            res.status(404);
+        } else
             res.json({ message: 'Information Successfully Deleted!'});
     });
 }
@@ -145,7 +146,7 @@ router.deleteAll = (req, res) => {
 
 
 router.findTotalaom = (req, res) => {
-
+    res.setHeader('Content-Type', 'application/json');
     Information.find(function(err, informations) {
         if (err)
             res.send(err);
