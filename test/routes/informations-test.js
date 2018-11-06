@@ -165,4 +165,16 @@ describe('Informations', function (){
                 });
         });
     });
+    describe('PUT /informations/:username', () => {
+        it('should return a message and the information amountofmessage by 1', function(done) {
+            request(server)
+                .put('/informations/bj')
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    let information = res.body.message ;
+                    expect(information).to.include('Information Successfully Increased!');
+                    done();
+                });
+        });
+    });
 });
