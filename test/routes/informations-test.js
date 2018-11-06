@@ -131,5 +131,5 @@ describe('Informations', function (){
                 });
         });
     });
-    
+
 });
