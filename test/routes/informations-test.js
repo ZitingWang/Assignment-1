@@ -131,5 +131,38 @@ describe('Informations', function (){
                 });
         });
     });
-
+    describe('POST /informations', function () {
+        it('should return confirmation message and update datastore', function(done) {
+            let information = {
+                id : 2,
+                username: 'test' ,
+                sex: 'male',
+                amountofmessage: 0
+            };
+            request(server)
+                .post('/informations')
+                .send(information)
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.have.property('message').equal('Information Successfully Added!' );
+                    done();
+                });
+        });
+        after(function  (done) {
+            request(server)
+                .get('/informations/f/te')
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    let result = _.map(res.body, (inf) => {
+                        return { id: inf.id,
+                            username: inf.username,
+                            sex: inf.sex}
+                    });
+                    expect(result).to.include( { id: 2, username:"test",sex: "male"  } );
+                    done();
+                });
+        });
+    });
 });
