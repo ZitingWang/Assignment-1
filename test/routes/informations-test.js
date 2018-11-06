@@ -177,4 +177,50 @@ describe('Informations', function (){
                 });
         });
     });
+    describe('DELETE /informations/:username', function () {
+        describe('DELETE /informations/:username', function () {
+            it('should return Information Successfully Deleted!', function(done) {
+                request(server)
+                    .delete('/informations/test')
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        let information = res.body.message;
+                        expect(information).to.include('Information Successfully Deleted!');
+                        done();
+                    });
+            });
+            after(function  (done) {
+                request(server)
+                    .get('/informations/f/te')
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.be.empty
+                        done();
+                    });
+            });
+        });
+        describe('DELETE /informations/:username', function () {
+            it('should return Information Deleted err!', function(done) {
+                request(server)
+                    .delete('/informations/ly')
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        done();
+                    });
+            });
+        });
+    });
+    describe('DELETE /informations', function () {
+        it('should return All of the Informations Successfully Deleted!', function(done) {
+            request(server)
+                .delete('/informations')
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    let information = res.body.message;
+                    expect(information).to.include('All of Information Successfully Deleted!');
+                    done();
+                });
+        });
+
+    });
 });
