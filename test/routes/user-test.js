@@ -76,4 +76,81 @@ describe('User', function (){
                 });
         });
     });
+    describe('POST /user', function () {
+        it('should return confirmation message and update datastore', function(done) {
+            let information = {
+                username: 'test' ,
+                password: 'mmxzs'
+            };
+            request(server)
+                .post('/user')
+                .send(information)
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.have.property('message').equal('User Successfully Added!' );
+                    done();
+                });
+        });
+        after(function  (done) {
+            request(server)
+                .get('/user/f/te')
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    expect(res.body).to.be.a('array');
+                    expect(res.body.length).to.equal(1);
+                    let result = _.map(res.body, (inf) => {
+                        return {username: inf.username,
+                            password: inf.password}
+                    });
+                    expect(result).to.include( {username:"test",password: "mmxzs"  } );
+                    done();
+                });
+        });
+    });
+    describe('DELETE /user/:username', function () {
+        describe('DELETE /user/:username', function () {
+            it('should return User Successfully Deleted!', function(done) {
+                request(server)
+                    .delete('/user/test')
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        let information = res.body.message;
+                        expect(information).to.include('User Successfully Deleted!');
+                        done();
+                    });
+            });
+            after(function  (done) {
+                request(server)
+                    .get('/user/f/te')
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        expect(res.body).to.be.empty
+                        done();
+                    });
+            });
+        });
+        describe('DELETE /user/:username', function () {
+            it('should return User Deleted err!', function(done) {
+                request(server)
+                    .delete('/user/ly')
+                    .end(function(err, res) {
+                        expect(res).to.have.status(200);
+                        done();
+                    });
+            });
+        });
+    });
+    describe('DELETE /user', function () {
+        it('should return All of the Users Successfully Deleted!', function(done) {
+            request(server)
+                .delete('/user')
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    let information = res.body.message;
+                    expect(information).to.include('All of the Users Successfully Deleted!');
+                    done();
+                });
+        });
+
+    });
 });
